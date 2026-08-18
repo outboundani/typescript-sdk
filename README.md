@@ -8,7 +8,7 @@ The official TypeScript SDK for the [outboundIQ](https://outboundiq.com) platfor
 - Typed coverage of the platform APIs: Assignment, Dials, Custom Dialer Integration, NRM, and Live Feed
 - Webhook signature verification with typed `dial.batch` payloads
 - Zero runtime dependencies
-- Works in Node 18+, Cloudflare Workers, Deno, and Bun
+- Works in Node 20+, Cloudflare Workers, Deno, and Bun
 - Automatic retries with exponential backoff, safe by default
 
 The [API reference](https://docs.outboundiq.cloud) remains the source of truth. Request and response fields in this SDK mirror the HTTP API exactly, so anything you read in the docs maps 1:1 to the types here.
@@ -276,7 +276,7 @@ const oiq = outboundiq({
 
 ## Requirements
 
-Node 18 or newer, or any runtime with the fetch and Web Crypto APIs (Cloudflare Workers, Deno, Bun).
+Node 20 or newer, or any runtime with the fetch and Web Crypto APIs (Cloudflare Workers, Deno, Bun).
 
 ## License
 

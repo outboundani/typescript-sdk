@@ -68,7 +68,7 @@ export class HttpClient {
     const fetchFn = config.fetch ?? globalThis.fetch;
     if (!fetchFn) {
       throw new OutboundIQError(
-        "No fetch implementation available. Use Node 18 or newer, or pass { fetch } in the client config.",
+        "No fetch implementation available. Use Node 20 or newer, or pass { fetch } in the client config.",
       );
     }
     this.fetchFn = fetchFn;
