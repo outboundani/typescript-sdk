@@ -1,6 +1,6 @@
 {
   "name": "@outboundiq/client",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Official TypeScript SDK for the outboundIQ platform: ANI assignment, dial ingestion, custom dialer integration, NRM, live feed, and webhook verification.",
   "keywords": [
     "outboundiq",

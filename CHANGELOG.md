@@ -1,5 +1,11 @@
 # @outboundiq/client
 
+## 0.2.0
+
+### Minor Changes
+
+- 38189d0: Add the ANI Planner client: `oiq.aniPlanner.generate()` wraps `POST /ani-planner/generate`, with typed region stats, campaign filters, and plan totals.
+
 ## 0.1.0
 
 ### Minor Changes
