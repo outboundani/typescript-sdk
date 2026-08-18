@@ -3,7 +3,7 @@
 The official TypeScript SDK for the [outboundIQ](https://outboundiq.com) platform.
 
 [![npm version](https://img.shields.io/npm/v/%40outboundiq%2Fclient)](https://www.npmjs.com/package/@outboundiq/client)
-[![CI](https://github.com/outboundiq/client/actions/workflows/ci.yml/badge.svg)](https://github.com/outboundiq/client/actions/workflows/ci.yml)
+[![CI](https://github.com/outboundani/typescript-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/outboundani/typescript-sdk/actions/workflows/ci.yml)
 
 - Typed coverage of the platform APIs: Assignment, Dials, Custom Dialer Integration, NRM, and Live Feed
 - Webhook signature verification with typed `dial.batch` payloads
