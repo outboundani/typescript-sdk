@@ -8,6 +8,7 @@ export {
   RateLimitError,
   WebhookVerificationError,
 } from "./core/errors";
+export * from "./resources/aniPlanner";
 export * from "./resources/assignment";
 export * from "./resources/custom";
 export * from "./resources/dials";
