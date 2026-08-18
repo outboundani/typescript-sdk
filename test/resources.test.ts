@@ -206,6 +206,71 @@ const cases: EndpointCase[] = [
     response: { status: "active", ani: "5551234567" },
   },
   {
+    name: "aniPlanner.generate",
+    run: (oiq) =>
+      oiq.aniPlanner.generate({
+        dateStart: "2026-05-01",
+        dateEnd: "2026-05-28",
+        dailyDialsTarget: "BETTER",
+        groupBy: "area_code",
+        inventoryMode: "managed",
+        campaigns: ["west-coast-outbound"],
+      }),
+    method: "POST",
+    url: `${BASE}/ani-planner/generate`,
+    body: {
+      dateStart: "2026-05-01",
+      dateEnd: "2026-05-28",
+      dailyDialsTarget: "BETTER",
+      groupBy: "area_code",
+      inventoryMode: "managed",
+      campaigns: ["west-coast-outbound"],
+    },
+    response: {
+      success: true,
+      data: {
+        country: "us",
+        dateStart: "2026-05-01",
+        dateEnd: "2026-05-28",
+        bizDays: 20,
+        dailyDialsTarget: 75,
+        groupBy: "area_code",
+        inventoryMode: "managed",
+        regionStats: [
+          {
+            region: "Los Angeles",
+            state: "CA",
+            areaCodes: ["213", "310"],
+            dailyDialsAverage: 412,
+            currentAnis: 4,
+            proposedAnis: 6,
+            difference: 2,
+            belowThreshold: false,
+          },
+        ],
+        totalDials: 12345,
+        totalContacts: 3456,
+        overallContactRate: 28.0,
+        totalCurrentAnis: 40,
+        totalProposedAnis: 58,
+        aniDifference: 18,
+        missingZipData: false,
+        tollFreeRecommendation: 0,
+        selectedCampaigns: [101],
+        campaigns: [
+          {
+            id: 101,
+            name: "West Coast Outbound",
+            internalIdentifier: "wc-out",
+            campaignType: "outbound",
+            inboundCampaignIds: [205],
+            inboundCampaignNames: ["West Coast Inbound"],
+          },
+        ],
+      },
+    },
+  },
+  {
     name: "liveFeed.ringcx.upload",
     run: (oiq) =>
       oiq.liveFeed.ringcx.upload({
@@ -255,6 +320,15 @@ describe("resource endpoints", () => {
       }
     });
   }
+
+  it("aniPlanner.generate defaults to an empty body", async () => {
+    const { calls, fetchFn } = fetchStub(() =>
+      jsonResponse(200, { success: true, data: {} }),
+    );
+    const oiq = outboundiq({ apiKey: "k", fetch: fetchFn });
+    await oiq.aniPlanner.generate();
+    expect(JSON.parse(calls[0]!.body!)).toEqual({});
+  });
 
   it("assignment.next narrows the response on success", async () => {
     const { fetchFn } = fetchStub(() =>

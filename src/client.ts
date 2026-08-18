@@ -1,4 +1,5 @@
 import { HttpClient, type OutboundIQConfig } from "./core/http";
+import { AniPlannerResource } from "./resources/aniPlanner";
 import { AssignmentResource } from "./resources/assignment";
 import { CustomDialerResource } from "./resources/custom";
 import { DialsResource } from "./resources/dials";
@@ -20,6 +21,8 @@ export class OutboundIQ {
   readonly nrm: NrmResource;
   /** Live lead feeds into supported dialers. */
   readonly liveFeed: LiveFeedResource;
+  /** ANI Planner: recommended ANI counts per region, based on recent dial volume. */
+  readonly aniPlanner: AniPlannerResource;
 
   constructor(config: OutboundIQConfig = {}) {
     const http = new HttpClient(config);
@@ -28,6 +31,7 @@ export class OutboundIQ {
     this.custom = new CustomDialerResource(http);
     this.nrm = new NrmResource(http);
     this.liveFeed = new LiveFeedResource(http);
+    this.aniPlanner = new AniPlannerResource(http);
   }
 }
 

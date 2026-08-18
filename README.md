@@ -5,7 +5,7 @@ The official TypeScript SDK for the [outboundIQ](https://outboundiq.com) platfor
 [![npm version](https://img.shields.io/npm/v/%40outboundiq%2Fclient)](https://www.npmjs.com/package/@outboundiq/client)
 [![CI](https://github.com/outboundani/typescript-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/outboundani/typescript-sdk/actions/workflows/ci.yml)
 
-- Typed coverage of the platform APIs: Assignment, Dials, Custom Dialer Integration, NRM, and Live Feed
+- Typed coverage of the platform APIs: Assignment, Dials, Custom Dialer Integration, ANI Planner, NRM, and Live Feed
 - Webhook signature verification with typed `dial.batch` payloads
 - Zero runtime dependencies
 - Works in Node 20+, Cloudflare Workers, Deno, and Bun
@@ -129,6 +129,38 @@ await oiq.custom.anis.create({
 });
 const { ani } = await oiq.custom.anis.get("5551234567");
 ```
+
+## ANI Planner API
+
+Analyze recent dial volume against your current ANI inventory and get a recommended number of ANIs per region.
+
+```ts
+const plan = await oiq.aniPlanner.generate({
+  dateStart: "2026-05-01",
+  dateEnd: "2026-05-28",
+  dailyDialsTarget: "BETTER", // 50 (BEST), 75 (BETTER), or 100 (GOOD) dials per ANI per day
+  groupBy: "area_code",
+  inventoryMode: "managed",
+  campaigns: ["west-coast-outbound"],
+});
+
+if (plan.success) {
+  const { regionStats, totalCurrentAnis, totalProposedAnis } = plan.data;
+  console.log(`${totalCurrentAnis} ANIs today, ${totalProposedAnis} recommended`);
+
+  for (const region of regionStats) {
+    if (region.difference > 0) {
+      console.log(`${region.region}, ${region.state}: add ${region.difference}`);
+    }
+  }
+}
+```
+
+Every field is optional; calling `generate()` with no arguments analyzes the start of the current month through yesterday, across every campaign. The date range defaults, the resolved numeric `dailyDialsTarget`, and the effective range are all echoed back in `data`.
+
+Regions averaging fewer than 20 dials per business day come back with `belowThreshold: true`, are recommended 0 ANIs, and are excluded from `totalProposedAnis` — so any numbers already provisioned there surface as surplus in `aniDifference`.
+
+The shape of `regionStats` follows the company's country, which is detected from the dialer. US and CA group into state/region rows with toll-free reported as a `state: "TF"` row; UK groups per area code and returns a non-zero `tollFreeRecommendation` plus a `"Mobile"` row for 07x volume.
 
 ## NRM API
 
